@@ -93,6 +93,53 @@ Checking the exception and it appears to trigger a NPE
 
 The above test was with CA 11.1.x so now I will re-do the same test but with R13
 
+Configured R13
+
+https://ca-oidc1.casupport.support2016.ad.hursley.ibm.com:9300/bi/completeAuth.jsp?code=VxmOVdUPzt1R4SdqZhUle4uUQDSTUcWx&state=eyJoX0NBTV9hY3Rpb24iOiJsb2dvbkFzIiwiQ0FNTmFtZXNwYWNlIjoib3B0dW1nb3ZpZCIsInJlZGlyZWN0VXJsIjoiL2JpL3YxL2Rpc3A_ZW5jb2Rpbmc9VVRGLTgmbT1wb3J0YWwlMmZtYWluLnh0cyJ9
+
+Grab Code
+
+
+curl -X POST -d "code=VxmOVdUPzt1R4SdqZhUle4uUQDSTUcWx&client_id=IECPWV&client_secret=1332a487aee476e914973b1f5393307db9e2e98054f71818bbb2ea324300e8879305670ab9a1990a21996142476b8434&redirect_uri=https://ca-oidc1.casupport.support2016.ad.hursley.ibm.com:9300/bi/completeAuth.jsp&grant_type=authorization_code" https://identity.nonprod.optumgovid.com:443/oidc/token
+
+
+$ curl -X POST -d "code=VxmOVdUPzt1R4SdqZhUle4uUQDSTUcWx&client_id=IECPWV&client_secret=1332a487aee476e914973b1f5393307db9e2e98054f71818bbb2ea324300e8879305670ab9a1990a21996142476b8434&redirect_uri=https://ca-oidc1.casupport.support2016.ad.hursley.ibm.com:9300/bi/completeAuth.jsp&grant_type=authorization_code" https://identity.nonprod.optumgovid.com:443/oidc/token
+{"access_token":"Mo6P7oBKZ8YfLaimC8oaEA9bHdv6VGYs","refresh_token":"nu2awR7xSaYfhFlLSs6ZZYhmQTli1pr8","id_token":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlM2Q4MjA4OS1iOGUwLTQxYzQtYThlNC0yMDVmYzdiMjUyYTIiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYmlydGhkYXRlIjoiMTk2NC0wNy0xNSIsImFtciI6WyJwd2QiLCJzcWEiXSwiaXNzIjoiaHR0cHM6XC9cL2lkZW50aXR5Lm5vbnByb2Qub3B0dW1nb3ZpZC5jb20iLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJ0bWFyemlhbm8iLCJnaXZlbl9uYW1lIjoiVG9ueSIsImF1ZCI6IklFQ1BXViIsImF6cCI6IklFQ1BXViIsImF1dGhfdGltZSI6MTU1MDc0ODI2MiwiZXhwIjoxNTUwNzUwMTYwLCJmYW1pbHlfbmFtZSI6Ik1hcnppYW5vIiwiaWF0IjoxNTUwNzQ4MzYwLCJlbWFpbCI6InRvbnkubWFyemlhbm9AdWsuaWJtLmNvbSJ9.hEiwEB2IV0c2Ihn-1t0ZeJQD5hT7p1Dn8JwCyqxxhh4","token_type":"Bearer","expires_in":3600}
+
+
+Decode token
+
+{
+ "sub": "e3d82089-b8e0-41c4-a8e4-205fc7b252a2",
+ "email_verified": true,
+ "birthdate": "1964-07-15",
+ "amr": [
+  "pwd",
+  "sqa"
+ ],
+ "iss": "https://identity.nonprod.optumgovid.com",
+ "preferred_username": "tmarziano",
+ "given_name": "Tony",
+ "aud": "IECPWV",
+ "azp": "IECPWV",
+ "auth_time": 1550748262,
+ "exp": 1550750160,
+ "family_name": "Marziano",
+ "iat": 1550748360,
+ "email": "tony.marziano@uk.ibm.com"
+}
+
+Yet the error from CA is
+
+CA Initialization Information
+Cannot login
+
+172.16.186.18:9300	3052	2019-02-21 11:31:10.558	+0	null	qlMwGldGM4qv2wGs29d2qjwGG2828q8qs4GjvwsG	0		Default Executor-thread-1442	AAA	13	4	Trace.CAM.AAA.SRVC.logon.legacyProcessLogon.legacyProcessOneLogon.commonProcessOneLogon.applicationLogon.authenticateUser.dispatchToNamespace.InvokeNamespaceHandler.logon	<exception><![CDATA[java.lang.NullPointerException
+	at com.ibm.cognos.camaaa.internal.OIDC.provider.LogonUtils.logonWithCode(LogonUtils.java:113)
+	at com.ibm.cognos.camaaa.internal.OIDC.provider.LogonUtils.getVisaFromCode(LogonUtils.java:98)
+	at com.ibm.cognos.camaaa.internal.OIDC.provider.OIDCAuthProvider.logon(OIDCAuthProvider.java:73)
+
+
 
 
 
