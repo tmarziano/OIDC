@@ -140,6 +140,7 @@ Cannot login
 	at com.ibm.cognos.camaaa.internal.OIDC.provider.OIDCAuthProvider.logon(OIDCAuthProvider.java:73)
 
 
+Seems this could be a defect (NPE) so development will be investigating
 
 
 
