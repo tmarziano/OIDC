@@ -1,2 +1,98 @@
 Troubleshooting OIDC issues
 
+
+Generate a code
+NB: Cognos is not running here. Service is stopped
+
+https://identity.nonprod.optumgovid.com:443/oidc/authorize?response_type=code&scope=openid email profile&client_id=IECPWV&redirect_uri=https://ca-oidc1.casupport.support2016.ad.hursley.ibm.com:9300/bi/completeAuth.jsp
+
+Execute in the browser which will take you to the login page, log in etc..
+
+https://ca-oidc1.casupport.support2016.ad.hursley.ibm.com:9300/bi/completeAuth.jsp?code=ImwcyFeRFHwuN5S8k4Bu1E77WzbR1c1X
+
+Grab the code and post using cURL to the /token endpoint to retrieve the id_token
+
+curl -X POST -d "code=ImwcyFeRFHwuN5S8k4Bu1E77WzbR1c1X&client_id=IECPWV&client_secret=1332a487aee476e914973b1f5393307db9e2e98054f71818bbb2ea324300e8879305670ab9a1990a21996142476b8434&redirect_uri=https://ca-oidc1.casupport.support2016.ad.hursley.ibm.com:9300/bi/completeAuth.jsp&grant_type=authorization_code" https://identity.nonprod.optumgovid.com:443/oidc/token
+
+$ curl -X POST -d "code=ImwcyFeRFHwuN5S8k4Bu1E77WzbR1c1X&client_id=IECPWV&client_secret=1332a487aee476e914973b1f5393307db9e2e98054f71818bbb2ea324300e8879305670ab9a1990a21996142476b8434&redirect_uri=https://ca-oidc1.casupport.support2016.ad.hursley.ibm.com:9300/bi/completeAuth.jsp&grant_type=authorization_code" https://identity.nonprod.optumgovid.com:443/oidc/token
+{"access_token":"QMWz6NHqVl61Hy29ykKwPasMMcoEcHrC","refresh_token":"6CqAoQpCPzfoHck70uTLaN0SAiCadm6o","id_token":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlM2Q4MjA4OS1iOGUwLTQxYzQtYThlNC0yMDVmYzdiMjUyYTIiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYmlydGhkYXRlIjoiMTk2NC0wNy0xNSIsImFtciI6WyJwd2QiLCJzcWEiXSwiaXNzIjoiaHR0cHM6XC9cL2lkZW50aXR5Lm5vbnByb2Qub3B0dW1nb3ZpZC5jb20iLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJ0bWFyemlhbm8iLCJnaXZlbl9uYW1lIjoiVG9ueSIsImF1ZCI6IklFQ1BXViIsImF6cCI6IklFQ1BXViIsImF1dGhfdGltZSI6MTU1MDc0MjQyMiwiZXhwIjoxNTUwNzQ0MzM0LCJmYW1pbHlfbmFtZSI6Ik1hcnppYW5vIiwiaWF0IjoxNTUwNzQyNTM0LCJlbWFpbCI6InRvbnkubWFyemlhbm9AdWsuaWJtLmNvbSJ9.v_23ONmwL4YnKJuzHGKivlJIsPhZTjZAS6zftGTOc0s","token_type":"Bearer","expires_in":3600}
+
+
+Decode the id_token
+
+{
+ "sub": "e3d82089-b8e0-41c4-a8e4-205fc7b252a2",
+ "email_verified": true,
+ "birthdate": "1964-07-15",
+ "amr": [
+  "pwd",
+  "sqa"
+ ],
+ "iss": "https://identity.nonprod.optumgovid.com",
+ "preferred_username": "tmarziano",
+ "given_name": "Tony",
+ "aud": "IECPWV",
+ "azp": "IECPWV",
+ "auth_time": 1550742422,
+ "exp": 1550744334,
+ "family_name": "Marziano",
+ "iat": 1550742534,
+ "email": "tony.marziano@uk.ibm.com"
+}
+
+Now, if we generate the 'code' when authenticating via CA
+
+Cognos is running now
+
+https://ca-oidc1.casupport.support2016.ad.hursley.ibm.com:9300/bi/completeAuth.jsp?code=o980ppMt2SLt1i3OaaBmCA0tVIu4sSp4&state=eyJoX0NBTV9hY3Rpb24iOiJsb2dvbkFzIiwiQ0FNTmFtZXNwYWNlIjoib3B0dW1nb3ZpZCIsInJlZGlyZWN0VXJsIjoiL2JpL3YxL2Rpc3A_ZW5jb2Rpbmc9VVRGLTgmbT1wb3J0YWwlMmZtYWluLnh0cyJ9
+
+Grab the 'code' and cURL to /token
+
+
+curl -X POST -d "code=o980ppMt2SLt1i3OaaBmCA0tVIu4sSp4&client_id=IECPWV&client_secret=1332a487aee476e914973b1f5393307db9e2e98054f71818bbb2ea324300e8879305670ab9a1990a21996142476b8434&redirect_uri=https://ca-oidc1.casupport.support2016.ad.hursley.ibm.com:9300/bi/completeAuth.jsp&grant_type=authorization_code" https://identity.nonprod.optumgovid.com:443/oidc/token
+
+
+$ curl -X POST -d "code=o980ppMt2SLt1i3OaaBmCA0tVIu4sSp4&client_id=IECPWV&client_secret=1332a487aee476e914973b1f5393307db9e2e98054f71818bbb2ea324300e8879305670ab9a1990a21996142476b8434&redirect_uri=https://ca-oidc1.casupport.support2016.ad.hursley.ibm.com:9300/bi/completeAuth.jsp&grant_type=authorization_code" https://identity.nonprod.optumgovid.com:443/oidc/token
+{"access_token":"7mbH1K43bjb346yOfV1H3fSpdi5uSKch","refresh_token":"fGioNxVVB4ErrtLb78RSUdFaB4vDyvA1","id_token":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlM2Q4MjA4OS1iOGUwLTQxYzQtYThlNC0yMDVmYzdiMjUyYTIiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYmlydGhkYXRlIjoiMTk2NC0wNy0xNSIsImFtciI6WyJwd2QiLCJzcWEiXSwiaXNzIjoiaHR0cHM6XC9cL2lkZW50aXR5Lm5vbnByb2Qub3B0dW1nb3ZpZC5jb20iLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJ0bWFyemlhbm8iLCJnaXZlbl9uYW1lIjoiVG9ueSIsImF1ZCI6IklFQ1BXViIsImF6cCI6IklFQ1BXViIsImF1dGhfdGltZSI6MTU1MDc0MzcxNSwiZXhwIjoxNTUwNzQ1NTk0LCJmYW1pbHlfbmFtZSI6Ik1hcnppYW5vIiwiaWF0IjoxNTUwNzQzNzk0LCJlbWFpbCI6InRvbnkubWFyemlhbm9AdWsuaWJtLmNvbSJ9.dqRQyTwyBxLRtSWGo97OO9mOiwJ7wLmU6JAVVS4lnzo","token_type":"Bearer","expires_in":3600}
+
+
+Grab the id_token
+
+eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlM2Q4MjA4OS1iOGUwLTQxYzQtYThlNC0yMDVmYzdiMjUyYTIiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYmlydGhkYXRlIjoiMTk2NC0wNy0xNSIsImFtciI6WyJwd2QiLCJzcWEiXSwiaXNzIjoiaHR0cHM6XC9cL2lkZW50aXR5Lm5vbnByb2Qub3B0dW1nb3ZpZC5jb20iLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJ0bWFyemlhbm8iLCJnaXZlbl9uYW1lIjoiVG9ueSIsImF1ZCI6IklFQ1BXViIsImF6cCI6IklFQ1BXViIsImF1dGhfdGltZSI6MTU1MDc0MzcxNSwiZXhwIjoxNTUwNzQ1NTk0LCJmYW1pbHlfbmFtZSI6Ik1hcnppYW5vIiwiaWF0IjoxNTUwNzQzNzk0LCJlbWFpbCI6InRvbnkubWFyemlhbm9AdWsuaWJtLmNvbSJ9.dqRQyTwyBxLRtSWGo97OO9mOiwJ7wLmU6JAVVS4lnzo
+
+Decode
+
+{
+ "sub": "e3d82089-b8e0-41c4-a8e4-205fc7b252a2",
+ "email_verified": true,
+ "birthdate": "1964-07-15",
+ "amr": [
+  "pwd",
+  "sqa"
+ ],
+ "iss": "https://identity.nonprod.optumgovid.com",
+ "preferred_username": "tmarziano",
+ "given_name": "Tony",
+ "aud": "IECPWV",
+ "azp": "IECPWV",
+ "auth_time": 1550743715,
+ "exp": 1550745594,
+ "family_name": "Marziano",
+ "iat": 1550743794,
+ "email": "tony.marziano@uk.ibm.com"
+}
+
+Yet the login fails with following error:
+
+CA Login Authentication Error
+Cannot login
+
+Checking the exception and it appears to trigger a NPE
+
+{"errorCodeString":"camInternalError","messages":[{"messageString":"AAA-SYS-0001 An internal error occurred."},{"nestingLevel":1,"messageString":"java.lang.NullPointerException"},{"nestingLevel":2,"messageString":"java.lang.NullPointerException\n\tat com.ibm.cognos.camaaa.internal.OIDC.provider.LogonUtils.logonWithCode(LogonUtils.java:113)\n\tat ...}
+
+The above test was with CA 11.1.x so now I will re-do the same test but with R13
+
+
+
+
