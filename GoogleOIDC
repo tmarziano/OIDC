@@ -1,0 +1,22 @@
+Sign up and create a OAuth Client here : https://developers.google.com/identity/sign-in/web/sign-in
+Add the redirect url to the whitelist and set the authorised domain as domain.com (root domain)
+Grab the clientID/Secret and create either a NATIVE Google Namespace or GENERIC
+
+
+Issue with scheduling was causing renewed credentials to work BUT scheduling anything to fail with error in the logs like:
+
+com.ibm.cognos.camaaa.internal.auth.exception.UserRecoverableException: AAA-OIDC-0010 The provided credentials are invalid. Reason: 'Attempting to obtain refresh token'
+
+To get around this problem set the following property values in the Generic Namespace:
+
+Password Grant
+Strategy - Unsupported
+Include Scope? - False
+
+Scheduling Credentials
+Strategy - ID Token Only
+Account Claims - ID Token
+
+
+and that worked!
+
