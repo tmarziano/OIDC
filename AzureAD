@@ -1,0 +1,6 @@
+AzureAD customer switched Return URL from Dispatcher to Gateway and now unable to log in.
+Customer found the following:
+
+Answer:fortunately i have found reason why credentials are corrupted when i try to connect through gateway.
+I use self-signed cerfificate and there has to be correct Subject Alternative Names for SSL. 
+When i created new certificate with correct host name (fully qualified name for gateway) then I was able to log in. 
