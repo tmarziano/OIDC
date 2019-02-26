@@ -1,6 +1,17 @@
 AzureAD customer switched Return URL from Dispatcher to Gateway and now unable to log in.
 Customer found the following:
 
-Answer:fortunately i have found reason why credentials are corrupted when i try to connect through gateway.
+Solution:fortunately i have found reason why credentials are corrupted when i try to connect through gateway.
 I use self-signed cerfificate and there has to be correct Subject Alternative Names for SSL. 
-When i created new certificate with correct host name (fully qualified name for gateway) then I was able to log in. 
+When i created new certificate with correct host name (fully qualified name for gateway) then I was able to log in.
+
+
+Non-Admin user's unable to log in to CA using AzureAD OIDC Namespace
+
+Solution: Multi-Tenancy so removed that and it worked. I found that in the cogstartup.xml
+
+crn:parameter name="tenantIdMapping" opaque="true">
+-<crn:value xsi:type="cfg:tenancyInfo">
+<crn:item name="pattern" xsi:type="xsd:string">~/ancestors[1]/defaultName</crn:item>
+</crn:value>
+</crn:parameter>
